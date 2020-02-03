@@ -1,0 +1,158 @@
+---
+title: "APM466"
+output: pdf_document
+---
+
+```{r}
+bonddata = read.csv("/Users/yuguo/Desktop/466/APM466H1.csv")
+date = as.Date(bonddata$maturity_date, "%m/%d/%Y")
+dirty_price <- function(today, annual_coupon_rate, clean_price, maturity_date) {
+  new_date = toString(maturity_date)
+    if (!substr(new_date, 6, 7) == "06") {
+a = as.Date("2019-09-01")
+} else {
+a = as.Date("2019-12-01")
+}
+ 
+  result <- as.numeric(as.data.frame(today - a))/365 * annual_coupon_rate * 100 + clean_price
+  return(result)
+}
+
+
+yield_one <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       (coupon + 100)/((1+(x/2))^(2*(1/6))) - dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+  
+yield_two <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       coupon/((1+(x/2))^(2*(1/6))) + (coupon+100)/((1+(x/2))^(2*(2/3))) - dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+
+yield_three <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       coupon/((1+(x/2))^(2*(1/6))) + coupon/((1+(x/2))^(2*(2/3))) + (coupon+100)/((1+(x/2))^(2*(7/6))) - dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+
+yield_four <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       coupon/((1+(x/2))^(2*(1/6))) + coupon/((1+(x/2))^(2*(2/3))) + coupon/((1+(x/2))^(2*(7/6))) + 
+       (coupon+100)/((1+(x/2))^(2*(5/3)))- dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+
+yield_five <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       coupon/((1+(x/2))^(2*(1/6))) + coupon/((1+(x/2))^(2*(2/3))) + coupon/((1+(x/2))^(2*(7/6))) + 
+       coupon/((1+(x/2))^(2*(5/3))) + (coupon+100)/((1+(x/2))^(2*(13/6))) - dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+
+
+yield_six <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       coupon/((1+(x/2))^(2*(5/12))) + coupon/((1+(x/2))^(2*(11/12))) + coupon/((1+(x/2))^(2*(17/12))) + 
+       coupon/((1+(x/2))^(2*(23/12))) + (coupon+100)/((1+(x/2))^(2*(29/12))) - dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+
+yield_seven <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       coupon/((1+(x/2))^(2*(1/6))) + coupon/((1+(x/2))^(2*(2/3))) + coupon/((1+(x/2))^(2*(7/6))) + 
+       coupon/((1+(x/2))^(2*(5/3))) + coupon/((1+(x/2))^(2*(13/6))) + coupon/((1+(x/2))^(2*(8/3))) + (coupon+100)/((1+(x/2))^(2*(19/6))) - dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+
+
+yield_eight <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       coupon/((1+(x/2))^(2*(5/12))) + coupon/((1+(x/2))^(2*(11/12))) + coupon/((1+(x/2))^(2*(17/12))) + 
+       coupon/((1+(x/2))^(2*(23/12))) + coupon/((1+(x/2))^(2*(29/12))) + coupon/((1+(x/2))^(2*(35/12))) + (coupon+100)/((1+(x/2))^(2*(41/12))) - dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+
+yield_nine <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       coupon/((1+(x/2))^(2*(1/6))) + coupon/((1+(x/2))^(2*(2/3))) + coupon/((1+(x/2))^(2*(7/6))) + 
+       coupon/((1+(x/2))^(2*(5/3))) + coupon/((1+(x/2))^(2*(13/6))) + coupon/((1+(x/2))^(2*(8/3))) + coupon/((1+(x/2))^(2*(19/6))) + coupon/((1+(x/2))^(2*(11/3))) + (coupon+100)/((1+(x/2))^(2*(25/6))) - dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+
+yield_ten <- function(annual_coupon_rate, dirtyprice) {
+   coupon = 100 * annual_coupon_rate/2
+   f = function(x){
+       coupon/((1+(x/2))^(2*(1/6))) + coupon/((1+(x/2))^(2*(2/3))) + coupon/((1+(x/2))^(2*(7/6))) + 
+       coupon/((1+(x/2))^(2*(5/3))) + coupon/((1+(x/2))^(2*(13/6))) + coupon/((1+(x/2))^(2*(8/3))) + coupon/((1+(x/2))^(2*(19/6))) + coupon/((1+(x/2))^(2*(11/3))) + coupon/((1+(x/2))^(2*(25/6))) + (coupon+100)/((1+(x/2))^(2*(14/3))) - dirtyprice
+   }
+   result = uniroot(f, lower = 0, upper = 0.5)
+   return(result[1])
+}
+
+yield <- function(today, annual_coupon_rate, clean_price, maturity_date){
+  if (toString(maturity_date) == "2020-03-01") { 
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_one(annual_coupon_rate, dirty)
+    } else if (toString(maturity_date) == "2020-09-01") {
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_two(annual_coupon_rate, dirty)
+    } else if  (toString(maturity_date) == "2021-03-01") {
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_three(annual_coupon_rate, dirty)
+    } else if(toString(maturity_date) == "2021-09-01") {
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_four(annual_coupon_rate, dirty)
+    } else if (toString(maturity_date) == "2022-03-01") {
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_five(annual_coupon_rate, dirty)
+    } else if  (toString(maturity_date) == "2022-06-01") {
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_six(annual_coupon_rate, dirty)
+    } else if(toString(maturity_date) == "2023-03-01") {
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_seven(annual_coupon_rate, dirty)
+    } else if (toString(maturity_date) == "2023-06-01") {
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_eight(annual_coupon_rate, dirty)
+    } else if  (toString(maturity_date) == "2024-03-01") {
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_nine(annual_coupon_rate, dirty)
+    } else if(toString(maturity_date) == "2024-09-01") {
+    dirty = dirty_price(today, annual_coupon_rate, clean_price, maturity_date)
+    result = yield_ten(annual_coupon_rate, dirty)      
+    }
+  return(result)
+}
+
+
+```
+
